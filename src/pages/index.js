@@ -7,11 +7,6 @@ export default function OgImage() {
   const router = useRouter();
 
   const searchParams = new URLSearchParams(router.asPath.split(/\?/)[1]);
-  const link = searchParams.get("url");
-
-  if (!link) return null;
-
-  const linkURL = new URL(link);
   const title = searchParams.get("title");
   const description = searchParams.get("description");
 
