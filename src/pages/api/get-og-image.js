@@ -57,20 +57,20 @@ export default async function handler(res, req) {
             .then
             ((result) => {
                 if (result && result.total_count >= 1) {
-                    res.json({
-                        status: 200,
-                        imageCreated: false,
-                        imageExists: true,
-                        meessage: `Image already exists in cloudinary folder`,
-                    });
+                    res.status(200)
+                        .json({
+                            imageCreated: false,
+                            imageExists: true,
+                            meessage: `Image already exists in cloudinary folder`,
+                        });
                 }
             }).catch((e) => {
-                res.json({
-                    status: 500,
-                    imageCreated: false,
-                    imageExists: false,
-                    message: `Error : ${e.message}`,
-                })
+                res.status(500)
+                    .json({
+                        imageCreated: false,
+                        imageExists: false,
+                        message: `Error : ${e.message}`,
+                    })
             })
 
         // launch chromium browser
@@ -104,30 +104,28 @@ export default async function handler(res, req) {
             public_id: `og_images/${slug}`,
         }, (error, result) => {
             // if the upload was good, return 200 and success message
-            res.json({
-                staus: 200,
-                imageCreated: true,
-                imageExists: true,
-                meessage: `Image successfully uploaded to cloudinary`,
-            });
+            res.status(200)
+                .json({
+                    imageCreated: true,
+                    imageExists: true,
+                    meessage: `Image successfully uploaded to cloudinary`,
+                });
             // if the upload was bad, return 500 and error message
             if (error) {
-                res.json({
-                    status: 500,
-                    imageCreated: false,
-                    imageExists: false,
-                    message: `Error uploading image to cloudinary: ${error.message}`,
-                })
+                res.status(500)
+                    .json({
+                        imageCreated: false,
+                        imageExists: false,
+                        message: `Error uploading image to cloudinary: ${error.message}`,
+                    })
             }
         })
 
 
     } catch (e) {
-        res.json({
-            status: 500,
-            imageCreated: false,
-            imageExists: false,
-            message: `Error in serverless function: ${e.message}`,
-        })
+        res.status(500)
+            .json({
+                message: `Error in serverless function: ${e.message}`,
+            })
     }
 }
