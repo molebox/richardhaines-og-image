@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
-import chrome from 'chrome-aws-lambda';
-import playwright from 'playwright';
+// import chrome from 'chrome-aws-lambda';
+import { chromium } from 'playwright';
 import cloudinary from 'cloudinary'
 
 cloudinary.v2.config({
@@ -57,12 +57,12 @@ export default async function handler(res, req) {
         // if the image does not exist then create it
         if (!imageExists) {
             // launch chromium browser
-            const browser = await playwright.chromium.launch({
+            const browser = await chromium.launch({
                 // args: chrome.args,
                 args: ["--no-sandbox", "--disable-setuid-sandbox"],
                 // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
                 // executablePath: await chrome.executablePath || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-                headless: chrome.headless,
+                headless: true,
             });
 
             // the og-images url with query params
