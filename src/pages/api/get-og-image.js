@@ -4,26 +4,6 @@ import { chromium } from 'playwright';
 import cloudinary from 'cloudinary'
 import Cors from 'cors'
 
-// Initializing the cors middleware
-const cors = Cors({
-    methods: ['POST', 'HEAD', 'GET'],
-    origin: 'https://www.richardhaines.dev'
-})
-
-// Helper method to wait for a middleware to execute before continuing
-// And to throw an error when an error happens in a middleware
-function runMiddleware(req, res, fn) {
-    return new Promise((resolve, reject) => {
-        fn(req, res, (result) => {
-            if (result instanceof Error) {
-                return reject(result)
-            }
-
-            return resolve(result)
-        })
-    })
-}
-
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -44,6 +24,26 @@ const BASE_URL = 'https://richardhaines-og-image.vercel.app'
 export default async function handler(res, req) {
     // params posted to function
     const { body: { title, description, slug } } = req;
+
+    // Initializing the cors middleware
+    const cors = Cors({
+        methods: ['POST', 'HEAD', 'GET'],
+        origin: `https://www.richardhaines.dev/writing/${slug}`
+    })
+
+    // Helper method to wait for a middleware to execute before continuing
+    // And to throw an error when an error happens in a middleware
+    function runMiddleware(req, res, fn) {
+        return new Promise((resolve, reject) => {
+            fn(req, res, (result) => {
+                if (result instanceof Error) {
+                    return reject(result)
+                }
+
+                return resolve(result)
+            })
+        })
+    }
 
 
     try {
