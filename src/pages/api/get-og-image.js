@@ -56,56 +56,8 @@ async function handler(res, req) {
                         imageExists: true,
                         meessage: `Image already exists in cloudinary folder`,
                     });
-                } else {
-                    // launch chromium browser
-                    const browser = await chromium.launch({
-                        // args: chrome.args,
-                        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-                        // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
-                        // executablePath: await chrome.executablePath || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-                        headless: true,
-                    });
-
-                    // the og-images url with query params
-                    const url = `${BASE_URL}/?title=${title}&description=${description}`;
-                    // create a new page with the correct dimensions
-                    const page = await browser.newPage({
-                        viewport: {
-                            width: 1200,
-                            height: 630
-                        }
-                    });
-                    //go to the og-images url. With the query params added,
-                    // it should produce our blog posts og-image with the posts title and description
-                    await page.goto(url, {
-                        timeout: 15 * 1000
-                    })
-                    // take the screenshot
-                    const screenshot = (await page.screenshot({ type: 'png' })).toString()
-
-                    //upload image to cloudinary
-                    cloudinary.v2.uploader.upload(screenshot, {
-                        public_id: `og_images/${slug}`,
-                    }, (error, result) => {
-                        // if the upload was good, return 200 and success message
-                        res.json({
-                            staus: 200,
-                            imageCreated: true,
-                            imageExists: true,
-                            meessage: `Image successfully uploaded to cloudinary`,
-                        });
-                        // if the upload was bad, return 500 and error message
-                        if (error) {
-                            res.json({
-                                status: 500,
-                                imageCreated: false,
-                                imageExists: false,
-                                message: `Error uploading image to cloudinary: ${error.message}`,
-                            })
-                        }
-                    })
                 }
-            }).catch((error) => {
+            }).catch((e) => {
                 res.json({
                     status: 500,
                     imageCreated: false,
@@ -113,6 +65,54 @@ async function handler(res, req) {
                     message: `Error : ${e.message}`,
                 })
             })
+
+        // launch chromium browser
+        const browser = await chromium.launch({
+            // args: chrome.args,
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
+            // executablePath: await chrome.executablePath || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            headless: true,
+        });
+
+        // the og-images url with query params
+        const url = `${BASE_URL}/?title=${title}&description=${description}`;
+        // create a new page with the correct dimensions
+        const page = await browser.newPage({
+            viewport: {
+                width: 1200,
+                height: 630
+            }
+        });
+        //go to the og-images url. With the query params added,
+        // it should produce our blog posts og-image with the posts title and description
+        await page.goto(url, {
+            timeout: 15 * 1000
+        })
+        // take the screenshot
+        const screenshot = (await page.screenshot({ type: 'png' })).toString()
+
+        //upload image to cloudinary
+        cloudinary.v2.uploader.upload(screenshot, {
+            public_id: `og_images/${slug}`,
+        }, (error, result) => {
+            // if the upload was good, return 200 and success message
+            res.json({
+                staus: 200,
+                imageCreated: true,
+                imageExists: true,
+                meessage: `Image successfully uploaded to cloudinary`,
+            });
+            // if the upload was bad, return 500 and error message
+            if (error) {
+                res.json({
+                    status: 500,
+                    imageCreated: false,
+                    imageExists: false,
+                    message: `Error uploading image to cloudinary: ${error.message}`,
+                })
+            }
+        })
 
 
     } catch (e) {
