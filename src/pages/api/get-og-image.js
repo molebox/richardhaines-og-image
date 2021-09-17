@@ -69,7 +69,7 @@ export default async function handler(res, req) {
                     .json({
                         imageCreated: false,
                         imageExists: false,
-                        message: `Error : ${e.message}`,
+                        message: `Error on cloudinary search: ${e.message}`,
                     })
             })
 
@@ -104,6 +104,8 @@ export default async function handler(res, req) {
             public_id: `og_images/${slug}`,
         }, (error, result) => {
             // if the upload was good, return 200 and success message
+            console.log({ result })
+            console.log({ error })
             res.status(200)
                 .json({
                     imageCreated: true,
@@ -111,14 +113,11 @@ export default async function handler(res, req) {
                     meessage: `Image successfully uploaded to cloudinary`,
                 });
             // if the upload was bad, return 500 and error message
-            if (error) {
-                res.status(500)
-                    .json({
-                        imageCreated: false,
-                        imageExists: false,
-                        message: `Error uploading image to cloudinary: ${error.message}`,
-                    })
-            }
+        }).catch((e) => {
+            res.status(500)
+                .json({
+                    message: `Error in cloudinary upload: ${e.message}`,
+                })
         })
 
 
