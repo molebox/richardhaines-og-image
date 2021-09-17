@@ -12,12 +12,12 @@ export default function OgImage() {
 
   return (
     <Flex
-    w={1200}
-    h={630}
-    bgColor="brand.black"
-    border="solid 10px #EDEDED"
+      w={1200}
+      h={630}
+      bgColor="brand.black"
+      border="solid 10px #EDEDED"
     >
-         <Flex
+      <Flex
         as="section"
         w="100%"
         maxW={900}
@@ -49,33 +49,33 @@ export default function OgImage() {
           article
         </Text>
         <Flex direction="column" w="fit-content">
-        <Text
-          as="h3"
-          fontFamily="heading"
-          fontSize="lg"
-          color="brand.grey"
-          fontWeight={400}
-          letterSpacing={2}
-          textTransform="uppercase"
-          my={5}
-          borderBottom="solid 2px #959595"
-        >
-         {title}
-        </Text>
-        <Text
-          as="h3"
-          fontFamily="body"
-          fontSize="mini"
-          color="brand.grey"
-          fontWeight={400}
-          letterSpacing={2}
-          my={5}
-          textTransform="uppercase"
-        >
-         {description}
-        </Text>
+          <Text
+            as="h3"
+            fontFamily="heading"
+            fontSize="lg"
+            color="brand.grey"
+            fontWeight={400}
+            letterSpacing={2}
+            textTransform="uppercase"
+            my={5}
+            borderBottom="solid 2px #959595"
+          >
+            {title}
+          </Text>
+          <Text
+            as="h3"
+            fontFamily="body"
+            fontSize="mini"
+            color="brand.grey"
+            fontWeight={400}
+            letterSpacing={2}
+            my={5}
+            textTransform="uppercase"
+          >
+            {description}
+          </Text>
         </Flex>
-    </Flex>
+      </Flex>
     </Flex>
   )
 }

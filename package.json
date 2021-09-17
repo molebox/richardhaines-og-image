@@ -12,8 +12,11 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/inconsolata": "^4.5.0",
+    "chrome-aws-lambda": "^10.1.0",
+    "cloudinary": "^1.27.0",
     "framer-motion": "^4",
     "next": "11.1.2",
+    "playwright": "^1.16.0-next-alpha-sep-17-2021",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   }
