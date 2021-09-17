@@ -4,6 +4,23 @@ dotenv.config();
 import { chromium } from 'playwright';
 import cloudinary from 'cloudinary'
 
+const allowCors = fn => async (req, res) => {
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    // another common pattern
+    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    )
+    if (req.method === 'OPTIONS') {
+        res.status(200).end()
+        return
+    }
+    return await fn(req, res)
+}
+
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -21,7 +38,7 @@ cloudinary.v2.config({
 
 const BASE_URL = 'https://richardhaines-og-image.vercel.app'
 
-export default async function handler(res, req) {
+async function handler(res, req) {
     // params posted to function
     const { body: { title, description, slug } } = req;
     let imageExists;
@@ -114,3 +131,5 @@ export default async function handler(res, req) {
         })
     }
 }
+
+export default allowCors(handler)
