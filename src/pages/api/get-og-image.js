@@ -2,22 +2,25 @@ require('dotenv').config();
 // import chrome from 'chrome-aws-lambda';
 import { chromium } from 'playwright';
 import cloudinary from 'cloudinary'
+import Cors from 'cors'
 
-const allowCors = fn => async (req, res) => {
-    res.setHeader('Access-Control-Allow-Credentials', true)
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    // another common pattern
-    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    )
-    if (req.method === 'OPTIONS') {
-        res.status(200).end()
-        return
-    }
-    return await fn(req, res)
+// Initializing the cors middleware
+const cors = Cors({
+    methods: ['GET', 'HEAD'],
+})
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+        fn(req, res, (result) => {
+            if (result instanceof Error) {
+                return reject(result)
+            }
+
+            return resolve(result)
+        })
+    })
 }
 
 cloudinary.v2.config({
@@ -37,11 +40,15 @@ cloudinary.v2.config({
 
 const BASE_URL = 'https://richardhaines-og-image.vercel.app'
 
-async function handler(res, req) {
+export default async function handler(res, req) {
     // params posted to function
     const { body: { title, description, slug } } = req;
 
+
     try {
+
+        // Run the middleware
+        await runMiddleware(req, res, cors)
 
         // check if the image already exists in our cloudinary folder
         cloudinary.v2.search
@@ -124,5 +131,3 @@ async function handler(res, req) {
         })
     }
 }
-
-export default allowCors(handler)
