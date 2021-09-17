@@ -1,6 +1,14 @@
+const dotenv = require('dotenv');
+dotenv.config();
 import chrome from 'chrome-aws-lambda';
 import playwright from 'playwright';
 import cloudinary from 'cloudinary'
+
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 // - Og-image app is a single route that has an 1200x630 dimension og card. It takes its data from the query params.
 // - Call serverless function in og-image app. Passing:
 //     - Title
