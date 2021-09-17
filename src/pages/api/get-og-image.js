@@ -7,6 +7,7 @@ import Cors from 'cors'
 // Initializing the cors middleware
 const cors = Cors({
     methods: ['POST', 'HEAD', 'GET', 'UPDATE'],
+    origin: 'https://www.richardhaines.dev'
 })
 
 // Helper method to wait for a middleware to execute before continuing
@@ -98,6 +99,7 @@ export default async function handler(res, req) {
         })
         // take the screenshot
         const screenshot = (await page.screenshot({ type: 'png' })).toString()
+        console.log({ screenshot })
 
         //upload image to cloudinary
         cloudinary.v2.uploader.upload(screenshot, {
