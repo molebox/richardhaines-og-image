@@ -58,10 +58,10 @@ export default async function handler(req, res) {
     // params posted to function
     const { title, description, slug } = req.body;
 
-    // if (req.method === 'OPTIONS') {
-    //     res.status(200);
-    // }
     res.setHeader('Access-Control-Allow-Origin', '*');
+    if (req.method === 'OPTIONS') {
+        res.status(200);
+    }
 
     try {
         // Run the middleware
