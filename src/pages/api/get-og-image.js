@@ -19,41 +19,41 @@ cloudinary.v2.config({
 // - Upload screenshot to cloudinary with slug as images name
 // - Blog fetches correct go image based on slug match
 
+// allowed origins
+const allowedOrigins = [
+    'https://www.richardhaines.dev',
+    `https://www.richardhaines.dev/writing/`,
+    'https://richardhaines-og-image.vercel.app',
+]
+// Initializing the cors middleware
+const cors = Cors({
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true)
+        } else {
+            callback(new Error())
+        }
+    },
+})
+
+// Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+const runCorsMiddleware = (req, res) => {
+    return new Promise((resolve, reject) => {
+        cors(req, res, (result) => {
+            if (result instanceof Error) {
+                return reject(result)
+            }
+            return resolve(result)
+        })
+    })
+}
+
 const BASE_URL = 'https://richardhaines-og-image.vercel.app'
 
 export default async function handler(res, req) {
     // params posted to function
     const { body: { title, description, slug } } = req;
-
-    // allowed origins
-    const allowedOrigins = [
-        'https://www.richardhaines.dev',
-        `https://www.richardhaines.dev/writing/${slug}`,
-        'https://richardhaines-og-image.vercel.app',
-    ]
-    // Initializing the cors middleware
-    const cors = Cors({
-        origin: (origin, callback) => {
-            if (allowedOrigins.includes(origin)) {
-                callback(null, true)
-            } else {
-                callback(new Error())
-            }
-        },
-    })
-
-    // Helper method to wait for a middleware to execute before continuing
-    // And to throw an error when an error happens in a middleware
-    const runCorsMiddleware = (req, res) => {
-        return new Promise((resolve, reject) => {
-            cors(req, res, (result) => {
-                if (result instanceof Error) {
-                    return reject(result)
-                }
-                return resolve(result)
-            })
-        })
-    }
 
     try {
         // Run the middleware
