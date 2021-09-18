@@ -23,6 +23,8 @@ cloudinary.v2.config({
 const allowedOrigins = [
     'https://www.richardhaines.dev/',
     `https://www.richardhaines.dev/writing/`,
+    'https://richardhaines.dev/',
+    `https://richardhaines.dev/writing/`,
     'https://richardhaines-og-image.vercel.app/',
     'http://localhost:3000/'
 ]
