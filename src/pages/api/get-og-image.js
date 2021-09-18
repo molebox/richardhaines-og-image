@@ -29,28 +29,28 @@ const allowedOrigins = [
     'http://localhost:3000/'
 ]
 // Initializing the cors middleware
-const cors = Cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true)
-        } else {
-            callback(new Error())
-        }
-    },
-})
+// const cors = Cors({
+//     origin: (origin, callback) => {
+//         if (allowedOrigins.includes(origin)) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error())
+//         }
+//     },
+// })
 
 // Helper method to wait for a middleware to execute before continuing
 // And to throw an error when an error happens in a middleware
-const runCorsMiddleware = (req, res) => {
-    return new Promise((resolve, reject) => {
-        cors(req, res, (result) => {
-            if (result instanceof Error) {
-                return reject(result)
-            }
-            return resolve(result)
-        })
-    })
-}
+// const runCorsMiddleware = (req, res) => {
+//     return new Promise((resolve, reject) => {
+//         cors(req, res, (result) => {
+//             if (result instanceof Error) {
+//                 return reject(result)
+//             }
+//             return resolve(result)
+//         })
+//     })
+// }
 
 const allowCors = fn => async (req, res) => {
     res.setHeader('Access-Control-Allow-Credentials', true)
@@ -75,10 +75,7 @@ async function handler(req, res) {
     // params posted to function
     const { title, description, slug } = req.body;
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    if (req.method === 'OPTIONS') {
-        res.status(200);
-    }
+    // res.setHeader('Access-Control-Allow-Origin', '*');
 
     try {
         // Run the middleware
