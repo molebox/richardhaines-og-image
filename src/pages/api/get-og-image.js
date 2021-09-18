@@ -53,11 +53,14 @@ const BASE_URL = 'https://richardhaines-og-image.vercel.app'
 
 export default async function handler(res, req) {
     // params posted to function
-    const { body: { title, description, slug } } = req;
+    const { title, description, slug } = req.body;
 
     try {
         // Run the middleware
         await runCorsMiddleware(req, res)
+        if (req.method === 'OPTIONS') {
+            res.status(200);
+        }
 
         try {
             // check if the image already exists in our cloudinary folder
