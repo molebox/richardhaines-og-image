@@ -66,7 +66,7 @@ export default async function handler(res, req) {
                         });
                 }
             }).catch((e) => {
-                res.status(500)
+                res.status(404)
                     .json({
                         image: '',
                         message: `Error on cloudinary search: ${e.message}`,
