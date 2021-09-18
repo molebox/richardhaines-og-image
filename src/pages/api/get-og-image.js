@@ -111,7 +111,7 @@ async function handler(req, res) {
                 // args: chrome.args,
                 args: ["--no-sandbox", "--disable-setuid-sandbox"],
                 // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
-                executablePath: await chrome.executablePath || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                executablePath: await chromium.executablePath || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
                 headless: true,
             });
 
