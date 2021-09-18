@@ -59,10 +59,11 @@ export default async function handler(req, res) {
     // if (req.method === 'OPTIONS') {
     //     res.status(200);
     // }
+    res.setHeader('Allow-Access-Control-Origin', '*');
 
     try {
         // Run the middleware
-        await runCorsMiddleware(req, res)
+        // await runCorsMiddleware(req, res)
 
         try {
             // check if the image already exists in our cloudinary folder
