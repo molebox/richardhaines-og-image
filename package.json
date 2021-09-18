@@ -17,7 +17,7 @@
     "dotenv": "^10.0.0",
     "framer-motion": "^4",
     "next": "11.1.2",
-    "playwright": "^1.14.1",
+    "playwright": "^1.16.0-next-alpha-sep-18-2021",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   }
