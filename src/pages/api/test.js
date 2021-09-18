@@ -1,11 +1,9 @@
 
 
-export default async function handler(res, req) { 
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
 
-
-  res.setHeader('Allow-Access-Control-Origin', '*');
-  res.status(200)
-  .json({
-    message: 'yo'
+  res.status(200).json({
+    message: 'Bird shirts ok! ',
   })
 }
