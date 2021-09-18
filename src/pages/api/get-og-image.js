@@ -30,6 +30,7 @@ const allowedOrigins = [
 const cors = Cors({
     optionsSuccessStatus: 204,
     methods: ['POST', 'OPTIONS'],
+    allowedHeaders: 'Accept',
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin)) {
             callback(null, true)
