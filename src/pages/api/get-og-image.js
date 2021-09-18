@@ -28,9 +28,6 @@ const allowedOrigins = [
 ]
 // Initializing the cors middleware
 const cors = Cors({
-    optionsSuccessStatus: 204,
-    methods: ['POST', 'OPTIONS'],
-    credentials: true,
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin)) {
             callback(null, true)
@@ -55,13 +52,13 @@ const runCorsMiddleware = (req, res) => {
 
 const BASE_URL = 'https://richardhaines-og-image.vercel.app'
 
-export default async function handler(res, req) {
+export default async function handler(req, res) {
     // params posted to function
     const { title, description, slug } = req.body;
 
-    if (req.method === 'OPTIONS') {
-        res.status(200);
-    }
+    // if (req.method === 'OPTIONS') {
+    //     res.status(200);
+    // }
 
     try {
         // Run the middleware
