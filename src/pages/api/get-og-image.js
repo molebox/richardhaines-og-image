@@ -17,14 +17,14 @@ cloudinary.v2.config({
 // - Serverless function passes title and description as query params to the go-image apps url
 // - Take screenshot with playwrite
 // - Upload screenshot to cloudinary with slug as images name
-// - Blog fetches correct go image based on slug match
+// - Blog gets returned image
 
 // allowed origins
 const allowedOrigins = [
-    'https://www.richardhaines.dev',
+    'https://www.richardhaines.dev/',
     `https://www.richardhaines.dev/writing/`,
-    'https://richardhaines-og-image.vercel.app',
-    'http://localhost:3000'
+    'https://richardhaines-og-image.vercel.app/',
+    'http://localhost:3000/'
 ]
 // Initializing the cors middleware
 const cors = Cors({
