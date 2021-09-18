@@ -24,6 +24,7 @@ const allowedOrigins = [
     'https://www.richardhaines.dev',
     `https://www.richardhaines.dev/writing/`,
     'https://richardhaines-og-image.vercel.app',
+    'http://localhost:3000'
 ]
 // Initializing the cors middleware
 const cors = Cors({
