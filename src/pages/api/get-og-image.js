@@ -28,7 +28,7 @@ export default async function handler(res, req) {
 
     // Initializing the cors middleware
     const cors = Cors({
-        methods: ['POST', 'HEAD', 'GET'],
+        methods: ['POST', 'HEAD', 'GET', 'OPTIONS'],
         origin: "*"
         // origin: `https://www.richardhaines.dev/writing/${slug}`
     })
@@ -63,7 +63,7 @@ export default async function handler(res, req) {
                     res.status(200)
                         .json({
                             image: result,
-                            meessage: `Image already exists in cloudinary folder`,
+                            message: `Image already exists in cloudinary folder`,
                         });
                 }
             }).catch((e) => {
