@@ -2,6 +2,7 @@ require('dotenv').config();
 // import chrome from 'chrome-aws-lambda';
 import { chromium } from 'playwright';
 import cloudinary from 'cloudinary'
+import { buildUrl } from 'cloudinary-build-url'
 import Cors from 'cors'
 
 cloudinary.v2.config({
@@ -60,16 +61,14 @@ export default async function handler(res, req) {
                 if (result && result.total_count >= 1) {
                     res.status(200)
                         .json({
-                            imageCreated: false,
-                            imageExists: true,
+                            image: result,
                             meessage: `Image already exists in cloudinary folder`,
                         });
                 }
             }).catch((e) => {
                 res.status(500)
                     .json({
-                        imageCreated: false,
-                        imageExists: false,
+                        image: '',
                         message: `Error on cloudinary search: ${e.message}`,
                     })
             })
@@ -110,14 +109,14 @@ export default async function handler(res, req) {
             console.log({ error })
             res.status(200)
                 .json({
-                    imageCreated: true,
-                    imageExists: true,
+                    image: result,
                     meessage: `Image successfully uploaded to cloudinary`,
                 });
             // if the upload was bad, return 500 and error message
         }).catch((e) => {
             res.status(500)
                 .json({
+                    image: '',
                     message: `Error in cloudinary upload: ${e.message}`,
                 })
         })
