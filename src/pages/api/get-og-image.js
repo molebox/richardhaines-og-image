@@ -28,7 +28,7 @@ const allowedOrigins = [
 ]
 // Initializing the cors middleware
 const cors = Cors({
-    optionsSuccessStatus: 200,
+    optionsSuccessStatus: 204,
     methods: ['POST', 'OPTIONS'],
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin)) {
@@ -58,12 +58,13 @@ export default async function handler(res, req) {
     // params posted to function
     const { title, description, slug } = req.body;
 
+    if (req.method === 'OPTIONS') {
+        res.status(200);
+    }
+
     try {
         // Run the middleware
         await runCorsMiddleware(req, res)
-        if (req.method === 'OPTIONS') {
-            res.status(200);
-        }
 
         try {
             // check if the image already exists in our cloudinary folder
