@@ -2,7 +2,6 @@ require('dotenv').config();
 // import chrome from 'chrome-aws-lambda';
 import { chromium } from 'playwright';
 import cloudinary from 'cloudinary'
-import { buildUrl } from 'cloudinary-build-url'
 import Cors from 'cors'
 
 cloudinary.v2.config({
@@ -29,8 +28,8 @@ export default async function handler(res, req) {
     // Initializing the cors middleware
     const cors = Cors({
         methods: ['POST', 'HEAD', 'GET', 'OPTIONS'],
-        origin: "*"
-        // origin: `https://www.richardhaines.dev/writing/${slug}`
+        // origin: "*"
+        origin: [`https://www.richardhaines.dev/writing/${slug}`, 'https://richardhaines-og-image.vercel.app']
     })
 
     // Helper method to wait for a middleware to execute before continuing
