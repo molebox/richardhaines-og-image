@@ -29,6 +29,7 @@ const allowedOrigins = [
 // Initializing the cors middleware
 const cors = Cors({
     optionsSuccessStatus: 200,
+    methods: ['POST', 'OPTIONS'],
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin)) {
             callback(null, true)
