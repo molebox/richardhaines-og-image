@@ -29,7 +29,8 @@ export default async function handler(res, req) {
     // Initializing the cors middleware
     const cors = Cors({
         methods: ['POST', 'HEAD', 'GET'],
-        origin: `https://www.richardhaines.dev/writing/${slug}`
+        origin: "*"
+        // origin: `https://www.richardhaines.dev/writing/${slug}`
     })
 
     // Helper method to wait for a middleware to execute before continuing
