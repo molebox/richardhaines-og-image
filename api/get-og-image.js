@@ -79,108 +79,104 @@ async function handler(req, res) {
     // res.setHeader('Access-Control-Allow-Origin', '*');
 
     try {
-        // Run the middleware
-        // await runCorsMiddleware(req, res)
-
-        try {
-            // check if the image already exists in our cloudinary folder
-            cloudinary.v2.search
-                .expression(`resource_type:image AND folder=og_images`)
-                .execute()
-                .then
-                ((result) => {
-                    if (result && result.total_count >= 1) {
-                        res.status(200)
-                            .json({
-                                image: result,
-                                message: `Image already exists in cloudinary folder`,
-                            });
-                    }
-                }).catch((e) => {
-                    res.status(404)
+        // check if the image already exists in our cloudinary folder
+        cloudinary.v2.search
+            .expression(`resource_type:image AND folder=og_images`)
+            .execute()
+            .then
+            ((result) => {
+                if (result && result.total_count >= 1) {
+                    res.status(200)
                         .json({
-                            image: '',
-                            message: `Error on cloudinary search: ${e.message}`,
-                        })
-                }).catch((e) => {
-                    res.status(500)
-                        .json({
-                            image: '',
-                            message: `Error in cloudinary search: ${e.message}`,
-                        })
-                })
-
-            // launch chromium browser
-            const browser = await playwright.chromium.launch({
-                args: chromium.args,
-                // args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-                // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
-                // executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-                executablePath: await chromium.executablePath,
-                headless: true,
-            });
-
-            // the og-images url with query params
-            const url = `${BASE_URL}/?title=${title}&description=${description}`;
-            // create a new page with the correct dimensions
-            const page = await browser.newPage({
-                viewport: {
-                    width: 1200,
-                    height: 630
+                            image: result,
+                            message: `Image already exists in cloudinary folder`,
+                        });
                 }
-            });
-            //go to the og-images url. With the query params added,
-            // it should produce our blog posts og-image with the posts title and description
-            await page.goto(url, {
-                timeout: 15 * 1000
-            })
-            // take the screenshot
-            const screenshot = (await page.screenshot({ type: 'png' }))
-            console.log({ screenshot })
-
-            //upload image to cloudinary
-            cloudinary.v2.uploader.upload(screenshot.toString(), {
-                public_id: `og_images/${slug}`,
-            }, (error, result) => {
-                // if the upload was good, return 200 and success message
-                console.log({ result })
-                console.log({ error })
-                res.status(200)
+            }).catch((e) => {
+                res.status(404)
                     .json({
-                        image: result,
-                        meessage: `Image successfully uploaded to cloudinary`,
-                    });
-                // if the upload was bad, return 500 and error message
+                        image: '',
+                        message: `Error on cloudinary search: ${e.message}`,
+                    })
             }).catch((e) => {
                 res.status(500)
                     .json({
                         image: '',
-                        message: `Error in cloudinary upload: ${e.message}`,
-                    })
-            }).catch((e) => {
-                console.log({ error })
-                res.status(500)
-                    .json({
-                        image: '',
-                        message: `Error in cloudinary: ${e.message}`,
+                        message: `Error in cloudinary search: ${e.message}`,
                     })
             })
 
-            // await page.close()
-            await browser.close()
+        // launch chromium browser
+        const browser = await playwright.chromium.launch({
+            args: chromium.args,
+            // args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+            // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
+            // executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            executablePath: await chromium.executablePath,
+            headless: true,
+        });
 
+        // the og-images url with query params
+        const url = `${BASE_URL}/?title=${title}&description=${description}`;
+        // create a new page with the correct dimensions
+        const page = await browser.newPage({
+            viewport: {
+                width: 1200,
+                height: 630
+            }
+        });
+        //go to the og-images url. With the query params added,
+        // it should produce our blog posts og-image with the posts title and description
+        await page.goto(url, {
+            timeout: 15 * 1000
+        })
+        // take the screenshot
+        const screenshot = (await page.screenshot({ type: 'png' }))
+        console.log({ screenshot })
 
-        } catch (e) {
+        //upload image to cloudinary
+        cloudinary.v2.uploader.upload(screenshot.toString(), {
+            public_id: `og_images/${slug}`,
+        }, (error, result) => {
+            // if the upload was good, return 200 and success message
+            console.log({ result })
+            console.log({ error })
+            res.status(200)
+                .json({
+                    image: result,
+                    meessage: `Image successfully uploaded to cloudinary`,
+                });
+            // if the upload was bad, return 500 and error message
+        }).catch((e) => {
             res.status(500)
                 .json({
-                    message: `Error in serverless function: ${e.message}`,
+                    image: '',
+                    message: `Error in cloudinary upload: ${e.message}`,
                 })
-        }
+        }).catch((e) => {
+            console.log({ error })
+            res.status(500)
+                .json({
+                    image: '',
+                    message: `Error in cloudinary: ${e.message}`,
+                })
+        })
+
+        // await page.close()
+        await browser.close()
 
 
-    } catch (error) {
-        res.status(403).json({ message: '🚫 Request blocked by CORS' })
+    } catch (e) {
+        res.status(500)
+            .json({
+                message: `Error in serverless function: ${e.message}`,
+            })
     }
+
+
+    // } catch (error) {
+    //     res.status(403).json({ message: '🚫 Request blocked by CORS' })
+    // }
 
 
 }
