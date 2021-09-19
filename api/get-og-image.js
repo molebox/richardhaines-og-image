@@ -129,7 +129,7 @@ async function handler(req, res) {
                 timeout: 15 * 1000
             })
             // take the screenshot
-            const screenshot = (await page.screenshot({ type: 'png' })).toString()
+            const screenshot = (await page.screenshot({ type: 'png' }))
             console.log({ screenshot })
 
             //upload image to cloudinary
