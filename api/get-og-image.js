@@ -1,10 +1,7 @@
 require('dotenv').config();
-// import chrome from 'chrome-aws-lambda';
 import chromium from 'chrome-aws-lambda';
 import playwright from 'playwright-core';
 import cloudinary from 'cloudinary'
-import bufferToDataUrl from "buffer-to-data-url"
-import fs from 'fs'
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -146,22 +143,24 @@ async function handler(req, res) {
 
         try {
             bufferToBase64(buffer).then((res) => {
-                return await cloudinary.v2.uploader.upload(res, { public_id: `ogImages/${slug}` }, (error, result) => {
-                    if (error) {
-                        res.status(500)
-                            .json({
-                                message: `Error in cloudinary upload: ${error}`,
-                            })
-                    } else if (result) {
-                        console.log({ result });
-                        image = result
-                        res.status(200)
-                            .json({
-                                image: result,
-                                message: `Image ready for use`,
-                            });
-                    }
-                });
+                image = res
+            });
+
+            await cloudinary.v2.uploader.upload(image, { public_id: `ogImages/${slug}` }, (error, result) => {
+                if (error) {
+                    res.status(500)
+                        .json({
+                            message: `Error in cloudinary upload: ${error}`,
+                        })
+                } else if (result) {
+                    console.log({ result });
+                    image = result
+                    res.status(200)
+                        .json({
+                            image: result,
+                            message: `Image ready for use`,
+                        });
+                }
             });
             // console.log({ uploadResponse });
             // image = uploadResponse
