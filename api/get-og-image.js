@@ -156,10 +156,10 @@ async function handler(req, res) {
                     console.log({ result });
                     image = result
                     // res.status(200)
-                    res.json({
-                        image: result,
-                        message: `Image ready for use`,
-                    });
+                    // res.json({
+                    //     image: result,
+                    //     message: `Image ready for use`,
+                    // });
                 }
             });
             // console.log({ uploadResponse });
@@ -196,13 +196,13 @@ async function handler(req, res) {
         // await page.close()
         await browser.close()
 
-        // if (image) {
-        //     res.status(200)
-        //         .json({
-        //             image: result,
-        //             message: `Image ready for use`,
-        //         });
-        // }
+        if (image) {
+            res.status(200)
+                .json({
+                    image,
+                    message: `Image ready for use`,
+                });
+        }
 
 
     } catch (e) {
