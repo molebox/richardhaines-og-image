@@ -141,7 +141,7 @@ async function handler(req, res) {
             console.log({ result })
             res.status(200)
                 .json({
-                    image: result.secure_url,
+                    image: result,
                     meessage: `Image successfully uploaded to cloudinary`,
                 });
             // if the upload was bad, return 500 and error message
