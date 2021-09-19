@@ -107,7 +107,7 @@ async function handler(req, res) {
             // launch chromium browser
             const browser = await playwright.chromium.launch({
                 // args: chrome.args,
-                args: ["--no-sandbox", "--disable-setuid-sandbox"],
+                args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
                 // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
                 // executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
                 executablePath: await chromium.executablePath,
@@ -132,9 +132,6 @@ async function handler(req, res) {
             const screenshot = (await page.screenshot({ type: 'png' })).toString()
             console.log({ screenshot })
 
-            await page.close()
-            await browser.close()
-
             //upload image to cloudinary
             cloudinary.v2.uploader.upload(screenshot, {
                 public_id: `og_images/${slug}`,
@@ -155,6 +152,9 @@ async function handler(req, res) {
                         message: `Error in cloudinary upload: ${e.message}`,
                     })
             })
+
+            await page.close()
+            await browser.close()
 
 
         } catch (e) {
