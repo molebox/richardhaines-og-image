@@ -56,7 +56,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.13.10", "@babel/runtime@^7.7.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.13.10", "@babel/runtime@^7.7.2", "@babel/runtime@^7.9.2":
   version "7.15.4"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.15.4.tgz"
   integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
@@ -1131,6 +1131,13 @@ buffer-crc32@~0.2.3:
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/buffer-crc32/-/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
   integrity sha1-DTM+PwDqxQqhRUq9MO+MKl2ackI=
+
+buffer-to-data-url@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/buffer-to-data-url/-/buffer-to-data-url-1.0.0.tgz#7ac95ac3ded94a62aa00519e2be487db51a07fcf"
+  integrity sha512-LtIlHOSgBKTSuC83syIou7GxbyJXB+kfQiiy+8/G/pcyGMvxUIg22DQRFsQeX5lOO5tMK5ZDuwSVyZ/Gxa1pKg==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 buffer-xor@^1.0.3:
   version "1.0.3"
