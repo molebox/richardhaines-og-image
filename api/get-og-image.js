@@ -128,31 +128,39 @@ async function handler(req, res) {
             timeout: 15 * 1000
         })
         // take the screenshot
+
+        const bufferToBase64 = (blob) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            return new Promise((resolve) => {
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                };
+            });
+        };
+
         const buffer = await page.screenshot()
 
         // convert buffer to base64 string
         // const imageToSend = buffer.toString('base64')
 
-        let imageToSend;
-        const imageBuffer = fs.readFileSync(buffer)
-        bufferToDataUrl("image/png", imageBuffer).then((res) => imageToSend = res)
-        console.log({ imageToSend })
-
         try {
-            await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
-                if (error) {
-                    res.json({
-                        message: `Error in cloudinary upload: ${error}`,
-                    })
-                } else if (result) {
-                    console.log({ result });
-                    image = result
-                    // res.status(200)
-                    res.json({
-                        image: result,
-                        message: `Image ready for use`,
-                    });
-                }
+            bufferToBase64(buffer).then((res) => {
+                await cloudinary.v2.uploader.upload(res, { public_id: `ogImages/${slug}` }, (error, result) => {
+                    if (error) {
+                        res.json({
+                            message: `Error in cloudinary upload: ${error}`,
+                        })
+                    } else if (result) {
+                        console.log({ result });
+                        image = result
+                        // res.status(200)
+                        res.json({
+                            image: result,
+                            message: `Image ready for use`,
+                        });
+                    }
+                });
             });
             // console.log({ uploadResponse });
             // image = uploadResponse
