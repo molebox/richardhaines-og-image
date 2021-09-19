@@ -131,15 +131,15 @@ async function handler(req, res) {
         const imageToSend = buffer.toString('base64')
         console.log({ imageToSend })
 
-        try {
-            const fileStr = req.body.data;
-            const uploadResponse = await cloudinary.uploader.upload(fileStr, {});
-            console.log(uploadResponse);
-            res.json({ msg: 'yaya' });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ err: 'Something went wrong' });
-        }
+        // try {
+        //     const fileStr = req.body.data;
+        //     const uploadResponse = await cloudinary.v2.uploader.upload(fileStr, {});
+        //     console.log(uploadResponse);
+        //     res.json({ msg: 'yaya' });
+        // } catch (err) {
+        //     console.error(err);
+        //     res.status(500).json({ err: 'Something went wrong' });
+        // }
 
         try {
             const uploadResponse = await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` });
