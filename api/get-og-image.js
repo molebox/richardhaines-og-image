@@ -136,6 +136,11 @@ async function handler(req, res) {
             console.log({ result })
             console.log('upload error: ', error)
             image = result
+            res.status(200)
+                .json({
+                    image: result,
+                    message: `Image ready for use`,
+                });
         }).catch((e) => {
             res.status(500)
                 .json({
@@ -147,13 +152,13 @@ async function handler(req, res) {
         // await page.close()
         await browser.close()
 
-        if (image) {
-            res.status(200)
-                .json({
-                    image: result,
-                    message: `Image ready for use`,
-                });
-        }
+        // if (image) {
+        //     res.status(200)
+        //         .json({
+        //             image: result,
+        //             message: `Image ready for use`,
+        //         });
+        // }
 
 
     } catch (e) {
