@@ -102,6 +102,12 @@ async function handler(req, res) {
                             image: '',
                             message: `Error on cloudinary search: ${e.message}`,
                         })
+                }).catch((e) => {
+                    res.status(500)
+                        .json({
+                            image: '',
+                            message: `Error in cloudinary search: ${e.message}`,
+                        })
                 })
 
             // launch chromium browser
