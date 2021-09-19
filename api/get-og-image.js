@@ -131,19 +131,9 @@ async function handler(req, res) {
         const imageToSend = buffer.toString('base64')
         console.log({ imageToSend })
 
-        // try {
-        //     const fileStr = req.body.data;
-        //     const uploadResponse = await cloudinary.v2.uploader.upload(fileStr, {});
-        //     console.log(uploadResponse);
-        //     res.json({ msg: 'yaya' });
-        // } catch (err) {
-        //     console.error(err);
-        //     res.status(500).json({ err: 'Something went wrong' });
-        // }
-
         try {
             const uploadResponse = await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` });
-            console.log(uploadResponse);
+            console.log({ uploadResponse });
             image = uploadResponse
             res.status(200)
                 .json({
@@ -154,7 +144,7 @@ async function handler(req, res) {
             res.status(500)
                 .json({
                     image: '',
-                    message: `Error in cloudinary upload: ${e.message}`,
+                    message: `Error in cloudinary upload: ${error.message}`,
                 })
         }
         //upload image to cloudinary
