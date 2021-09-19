@@ -126,10 +126,10 @@ async function handler(req, res) {
             timeout: 15 * 1000
         })
         // take the screenshot
-        const screenshot = await page.screenshot()
-        console.log(screenshot.toString('base64'))
+        const buffer = await page.screenshot()
 
-        const imageToSend = screenshot.toString('base64')
+        const imageToSend = buffer.toString('base64')
+        console.log({ imageToSend })
 
         //upload image to cloudinary
         cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }).then((result) => {
