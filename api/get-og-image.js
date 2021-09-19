@@ -139,6 +139,7 @@ async function handler(req, res) {
         }, (error, result) => {
             // if the upload was good, return 200 and success message
             console.log({ result })
+            console.log('upload error: ', error)
             res.status(200)
                 .json({
                     image: result,
