@@ -132,6 +132,8 @@ async function handler(req, res) {
             const screenshot = (await page.screenshot({ type: 'png' })).toString()
             console.log({ screenshot })
 
+            await browser.close()
+
             //upload image to cloudinary
             cloudinary.v2.uploader.upload(screenshot, {
                 public_id: `og_images/${slug}`,
