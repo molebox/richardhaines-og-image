@@ -140,10 +140,9 @@ async function handler(req, res) {
         const buffer = await page.screenshot()
 
         // convert buffer to base64 string
-        // const imageToSend = buffer.toString('base64')
+        const imageToSend = buffer.toString('base64')
 
         try {
-            const imageToSend = fs.readFileSync(buffer, 'base64');
 
             await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
                 if (error) {
