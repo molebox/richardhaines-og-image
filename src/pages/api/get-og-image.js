@@ -1,6 +1,7 @@
 require('dotenv').config();
 // import chrome from 'chrome-aws-lambda';
-import { chromium } from 'playwright';
+import chromium from 'chrome-aws-lambda';
+import playwright from 'playwright-core';
 import cloudinary from 'cloudinary'
 import Cors from 'cors'
 
@@ -104,7 +105,7 @@ async function handler(req, res) {
                 })
 
             // launch chromium browser
-            const browser = await chromium.launch({
+            const browser = await playwright.chromium.launch({
                 // args: chrome.args,
                 args: ["--no-sandbox", "--disable-setuid-sandbox"],
                 // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
