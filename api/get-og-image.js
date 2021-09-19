@@ -133,7 +133,7 @@ async function handler(req, res) {
         // convert buffer to base64 string
         // const imageToSend = buffer.toString('base64')
 
-        const imageBuffer = fs.readFileSync(buffer)
+        const imageBuffer = fs.readFileSync(buffer.toString())
         const imageToSend = bufferToDataUrl("image/png", imageBuffer)
         console.log({ imageToSend })
 
