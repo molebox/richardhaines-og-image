@@ -131,23 +131,49 @@ async function handler(req, res) {
         const imageToSend = buffer.toString('base64')
         console.log({ imageToSend })
 
-        //upload image to cloudinary
-        cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }).then((result) => {
-            console.log({ result })
-            console.log('upload error: ', error)
-            image = result
+        try {
+            const fileStr = req.body.data;
+            const uploadResponse = await cloudinary.uploader.upload(fileStr, {});
+            console.log(uploadResponse);
+            res.json({ msg: 'yaya' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ err: 'Something went wrong' });
+        }
+
+        try {
+            const uploadResponse = await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` });
+            console.log(uploadResponse);
+            image = uploadResponse
             res.status(200)
                 .json({
                     image: result,
                     message: `Image ready for use`,
                 });
-        }).catch((e) => {
+        } catch (error) {
             res.status(500)
                 .json({
                     image: '',
                     message: `Error in cloudinary upload: ${e.message}`,
                 })
-        })
+        }
+        //upload image to cloudinary
+        // cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }).then((result) => {
+        //     console.log({ result })
+        //     console.log('upload error: ', error)
+        //     image = result
+        //     res.status(200)
+        //         .json({
+        //             image: result,
+        //             message: `Image ready for use`,
+        //         });
+        // }).catch((e) => {
+        //     res.status(500)
+        //         .json({
+        //             image: '',
+        //             message: `Error in cloudinary upload: ${e.message}`,
+        //         })
+        // })
 
         // await page.close()
         await browser.close()
