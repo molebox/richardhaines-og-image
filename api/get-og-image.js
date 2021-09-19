@@ -3,7 +3,7 @@ require('dotenv').config();
 import chromium from 'chrome-aws-lambda';
 import playwright from 'playwright-core';
 import cloudinary from 'cloudinary'
-import Cors from 'cors'
+import isPng from 'is-png';
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -131,28 +131,31 @@ async function handler(req, res) {
             timeout: 15 * 1000
         })
         // take the screenshot
-        const screenshot = await page.screenshot().toString('base64')
+        const screenshot = await page.screenshot()
         console.log({ screenshot })
 
-        //upload image to cloudinary
-        cloudinary.v2.uploader.upload(screenshot, {
-            public_id: `og_images/${slug}`,
-        }, (error, result) => {
-            // if the upload was good, return 200 and success message
-            console.log({ result })
-            res.status(200)
-                .json({
-                    image: result.secure_url,
-                    meessage: `Image successfully uploaded to cloudinary`,
-                });
-            // if the upload was bad, return 500 and error message
-        }).catch((e) => {
-            res.status(500)
-                .json({
-                    image: '',
-                    message: `Error in cloudinary upload: ${e.message}`,
-                })
-        })
+        if (isPng(screenshot)) {
+            //upload image to cloudinary
+            cloudinary.v2.uploader.upload(screenshot, {
+                public_id: `og_images/${slug}`,
+            }, (error, result) => {
+                // if the upload was good, return 200 and success message
+                console.log({ result })
+                res.status(200)
+                    .json({
+                        image: result.secure_url,
+                        meessage: `Image successfully uploaded to cloudinary`,
+                    });
+                // if the upload was bad, return 500 and error message
+            }).catch((e) => {
+                res.status(500)
+                    .json({
+                        image: '',
+                        message: `Error in cloudinary upload: ${e.message}`,
+                    })
+            })
+
+        }
 
         // await page.close()
         await browser.close()
