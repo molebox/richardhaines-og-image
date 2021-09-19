@@ -146,7 +146,7 @@ async function handler(req, res) {
 
         try {
             bufferToBase64(buffer).then((res) => {
-                await cloudinary.v2.uploader.upload(res, { public_id: `ogImages/${slug}` }, (error, result) => {
+                return await cloudinary.v2.uploader.upload(res, { public_id: `ogImages/${slug}` }, (error, result) => {
                     if (error) {
                         res.status(500)
                             .json({
