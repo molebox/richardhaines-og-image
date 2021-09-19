@@ -147,7 +147,7 @@ async function handler(req, res) {
             image = uploadResponse
             res.status(200)
                 .json({
-                    image: result,
+                    image: uploadResponse,
                     message: `Image ready for use`,
                 });
         } catch (error) {
