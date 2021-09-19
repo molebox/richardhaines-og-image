@@ -131,16 +131,15 @@ async function handler(req, res) {
             timeout: 15 * 1000
         })
         // take the screenshot
-        const screenshot = await page.screenshot()
+        const screenshot = await page.screenshot().toString('base64')
         console.log({ screenshot })
 
         //upload image to cloudinary
-        cloudinary.v2.uploader.upload(screenshot.toString('base64'), {
+        cloudinary.v2.uploader.upload(screenshot, {
             public_id: `og_images/${slug}`,
         }, (error, result) => {
             // if the upload was good, return 200 and success message
             console.log({ result })
-            console.log({ error })
             res.status(200)
                 .json({
                     image: result.secure_url,
@@ -152,13 +151,6 @@ async function handler(req, res) {
                 .json({
                     image: '',
                     message: `Error in cloudinary upload: ${e.message}`,
-                })
-        }).catch((e) => {
-            console.log({ error })
-            res.status(500)
-                .json({
-                    image: '',
-                    message: `Error in cloudinary: ${e.message}`,
                 })
         })
 
