@@ -3,7 +3,7 @@ require('dotenv').config();
 import chromium from 'chrome-aws-lambda';
 import playwright from 'playwright-core';
 import cloudinary from 'cloudinary'
-import isPng from 'is-png';
+import { fileTypeFromBuffer } from 'file-type'
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -134,7 +134,9 @@ async function handler(req, res) {
         const screenshot = await page.screenshot()
         console.log({ screenshot })
 
-        if (isPng(screenshot)) {
+        const isPng = await fileTypeFromBuffer(screenshot)
+
+        if (isPng.ext === 'png') {
             //upload image to cloudinary
             cloudinary.v2.uploader.upload(screenshot, {
                 public_id: `og_images/${slug}`,
