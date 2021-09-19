@@ -106,8 +106,8 @@ async function handler(req, res) {
 
             // launch chromium browser
             const browser = await playwright.chromium.launch({
-                // args: chrome.args,
-                args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+                args: chromium.args,
+                // args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
                 // executablePath: await chrome.executablePath || "C:\\Users\\richa\\AppData\\Local\\ms-playwright\\chromium-907428\\chrome-win\\chrome.exe",
                 // executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
                 executablePath: await chromium.executablePath,
@@ -153,7 +153,7 @@ async function handler(req, res) {
                     })
             })
 
-            await page.close()
+            // await page.close()
             await browser.close()
 
 
