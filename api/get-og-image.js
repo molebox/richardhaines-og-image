@@ -76,6 +76,7 @@ async function handler(req, res) {
     const { title, description, slug } = req.body;
 
     // res.setHeader('Access-Control-Allow-Origin', '*');
+    let image;
 
     try {
         // check if the image already exists in our cloudinary folder
@@ -85,23 +86,18 @@ async function handler(req, res) {
             .then
             ((result) => {
                 if (result && result.total_count >= 1) {
-                    res.status(200)
-                        .json({
-                            image: result,
-                            message: `Image already exists in cloudinary folder`,
-                        });
+                    image = result.secure_url
+                    // res.status(200)
+                    //     .json({
+                    //         image: result,
+                    //         message: `Image already exists in cloudinary folder`,
+                    //     });
                 }
             }).catch((e) => {
                 res.status(404)
                     .json({
                         image: '',
                         message: `Error on cloudinary search: ${e.message}`,
-                    })
-            }).catch((e) => {
-                res.status(500)
-                    .json({
-                        image: '',
-                        message: `Error in cloudinary search: ${e.message}`,
                     })
             })
 
@@ -140,11 +136,12 @@ async function handler(req, res) {
             // if the upload was good, return 200 and success message
             console.log({ result })
             console.log('upload error: ', error)
+            image = result.secure_url
             // res.status(200)
-            res.json({
-                image: result,
-                meessage: `Image successfully uploaded to cloudinary`,
-            });
+            // res.json({
+            //     image: result,
+            //     meessage: `Image successfully uploaded to cloudinary`,
+            // });
             // if the upload was bad, return 500 and error message
         }).catch((e) => {
             res.status(500)
@@ -156,6 +153,14 @@ async function handler(req, res) {
 
         // await page.close()
         await browser.close()
+
+        if (image) {
+            res.status(200)
+                .json({
+                    image: result,
+                    message: `Image ready for use`,
+                });
+        }
 
 
     } catch (e) {
