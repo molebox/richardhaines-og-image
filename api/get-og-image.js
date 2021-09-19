@@ -146,18 +146,18 @@ async function handler(req, res) {
 
             await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
                 if (error) {
-                    res.status(500)
-                        .json({
-                            message: `Error in cloudinary upload: ${error}`,
-                        })
+                    // res.status(500)
+                    res.json({
+                        message: `Error in cloudinary upload: ${error}`,
+                    })
                 } else if (result) {
                     console.log({ result });
                     image = result
-                    res.status(200)
-                        .json({
-                            image: result,
-                            message: `Image ready for use`,
-                        });
+                    // res.status(200)
+                    res.json({
+                        image: result,
+                        message: `Image ready for use`,
+                    });
                 }
             });
             // console.log({ uploadResponse });
