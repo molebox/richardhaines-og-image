@@ -137,15 +137,17 @@ async function handler(req, res) {
         // };
 
         // take the screenshot
-        const buffer = await page.screenshot({ encoding: "base64" })
+        const buffer = await page.screenshot({ type: "png" })
 
         // convert buffer to base64 string
         const imageToSend = buffer.toString('base64')
+        console.log({ imageToSend })
 
         try {
 
-            await cloudinary.v2.uploader.upload(buffer, { public_id: `ogImages/${slug}` }, (error, result) => {
+            await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
                 if (error) {
+                    console.log({ error })
                     // res.status(500)
                     res.json({
                         message: `Error in cloudinary upload: ${error}`,
