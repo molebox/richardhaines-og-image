@@ -2,6 +2,7 @@ require('dotenv').config();
 import chromium from 'chrome-aws-lambda';
 import playwright from 'playwright-core';
 import cloudinary from 'cloudinary'
+import fs from 'fs'
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -124,29 +125,27 @@ async function handler(req, res) {
         await page.goto(url, {
             timeout: 15 * 1000
         })
+
+        // const bufferToBase64 = (blob) => {
+        //     const reader = new FileReader();
+        //     reader.readAsDataURL(blob);
+        //     return new Promise((resolve) => {
+        //         reader.onloadend = () => {
+        //             resolve(reader.result);
+        //         };
+        //     });
+        // };
+
         // take the screenshot
-
-        const bufferToBase64 = (blob) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            return new Promise((resolve) => {
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-            });
-        };
-
         const buffer = await page.screenshot()
 
         // convert buffer to base64 string
         // const imageToSend = buffer.toString('base64')
 
         try {
-            bufferToBase64(buffer).then((res) => {
-                image = res
-            });
+            const imageToSend = fs.readFileSync(buffer, 'base64');
 
-            await cloudinary.v2.uploader.upload(image, { public_id: `ogImages/${slug}` }, (error, result) => {
+            await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
                 if (error) {
                     res.status(500)
                         .json({
