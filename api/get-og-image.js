@@ -151,6 +151,13 @@ async function handler(req, res) {
                         image: '',
                         message: `Error in cloudinary upload: ${e.message}`,
                     })
+            }).catch((e) => {
+                console.log({ error })
+                res.status(500)
+                    .json({
+                        image: '',
+                        message: `Error in cloudinary: ${e.message}`,
+                    })
             })
 
             // await page.close()
