@@ -130,22 +130,47 @@ async function handler(req, res) {
 
         // convert buffer to base64 string
         const imageToSend = buffer.toString('base64')
-        console.log({ imageToSend })
+
+        const blobToBase64 = (blob) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            return new Promise((resolve) => {
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                };
+            });
+        }
+
+        blobToBase64(buffer).then((res) => console.log({ res }))
+
 
         try {
-            const uploadResponse = await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` });
-            console.log({ uploadResponse });
-            image = uploadResponse
-            // res.status(200)
-            res.json({
-                image: uploadResponse,
-                message: `Image ready for use`,
+            await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
+                if (error) {
+                    res.json({
+                        message: `Error in cloudinary upload: ${error}`,
+                    })
+                } else if (result) {
+                    console.log({ result });
+                    image = result
+                    // res.status(200)
+                    res.json({
+                        image: result,
+                        message: `Image ready for use`,
+                    });
+                }
             });
-        } catch (e) {
-            const error = JSON.stringify(e)
+            // console.log({ uploadResponse });
+            // image = uploadResponse
+            // // res.status(200)
+            // res.json({
+            //     image: uploadResponse,
+            //     message: `Image ready for use`,
+            // });
+        } catch (error) {
             // res.status(500)
             res.json({
-                message: `Error in cloudinary upload: ${error}`,
+                message: `Error in cloudinary upload catch: ${error}`,
             })
         }
         //upload image to cloudinary
