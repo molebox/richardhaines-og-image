@@ -4,6 +4,7 @@ import chromium from 'chrome-aws-lambda';
 import playwright from 'playwright-core';
 import cloudinary from 'cloudinary'
 import bufferToDataUrl from "buffer-to-data-url"
+import fs from 'fs'
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -134,6 +135,7 @@ async function handler(req, res) {
 
         const imageBuffer = fs.readFileSync(buffer)
         const imageToSend = bufferToDataUrl("image/png", imageBuffer)
+        console.log({ imageToSend })
 
         try {
             await cloudinary.v2.uploader.upload(imageToSend, { public_id: `ogImages/${slug}` }, (error, result) => {
