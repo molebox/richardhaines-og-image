@@ -86,7 +86,7 @@ async function handler(req, res) {
             .then
             ((result) => {
                 if (result && result.total_count >= 1) {
-                    image = result.secure_url
+                    image = result
                     // res.status(200)
                     //     .json({
                     //         image: result,
@@ -136,7 +136,7 @@ async function handler(req, res) {
             // if the upload was good, return 200 and success message
             console.log({ result })
             console.log('upload error: ', error)
-            image = result.secure_url
+            image = result
             // res.status(200)
             // res.json({
             //     image: result,
