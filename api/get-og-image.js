@@ -133,7 +133,7 @@ async function handler(req, res) {
             console.log({ screenshot })
 
             //upload image to cloudinary
-            cloudinary.v2.uploader.upload(screenshot, {
+            cloudinary.v2.uploader.upload(screenshot.toString(), {
                 public_id: `og_images/${slug}`,
             }, (error, result) => {
                 // if the upload was good, return 200 and success message
