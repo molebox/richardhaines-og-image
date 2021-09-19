@@ -128,6 +128,7 @@ async function handler(req, res) {
         // take the screenshot
         const buffer = await page.screenshot()
 
+        // convert buffer to base64 string
         const imageToSend = buffer.toString('base64')
         console.log({ imageToSend })
 
@@ -140,7 +141,8 @@ async function handler(req, res) {
                 image: uploadResponse,
                 message: `Image ready for use`,
             });
-        } catch (error) {
+        } catch (e) {
+            const error = JSON.stringify(e)
             // res.status(500)
             res.json({
                 message: `Error in cloudinary upload: ${error}`,
