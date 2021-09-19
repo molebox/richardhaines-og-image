@@ -129,8 +129,10 @@ async function handler(req, res) {
         const screenshot = await page.screenshot()
         console.log(screenshot.toString('base64'))
 
+        const imageToSend = screenshot.toString('base64')
+
         //upload image to cloudinary
-        cloudinary.v2.uploader.upload(screenshot.toString('base64'), {
+        cloudinary.v2.uploader.upload(imageToSend, {
             public_id: `ogImages/${slug}`,
         }, (error, result) => {
             // if the upload was good, return 200 and success message
