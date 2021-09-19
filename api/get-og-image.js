@@ -80,26 +80,26 @@ async function handler(req, res) {
 
     try {
         // check if the image already exists in our cloudinary folder
-        cloudinary.v2.search
-            .expression(`resource_type:image AND folder=og_images`)
-            .execute()
-            .then
-            ((result) => {
-                if (result && result.total_count >= 1) {
-                    image = result
-                    // res.status(200)
-                    //     .json({
-                    //         image: result,
-                    //         message: `Image already exists in cloudinary folder`,
-                    //     });
-                }
-            }).catch((e) => {
-                res.status(404)
-                    .json({
-                        image: '',
-                        message: `Error on cloudinary search: ${e.message}`,
-                    })
-            })
+        // cloudinary.v2.search
+        //     .expression(`resource_type:image AND folder=og_images`)
+        //     .execute()
+        //     .then
+        //     ((result) => {
+        //         if (result && result.total_count >= 1) {
+        //             image = result
+        //             // res.status(200)
+        //             //     .json({
+        //             //         image: result,
+        //             //         message: `Image already exists in cloudinary folder`,
+        //             //     });
+        //         }
+        //     }).catch((e) => {
+        //         res.status(404)
+        //             .json({
+        //                 image: '',
+        //                 message: `Error on cloudinary search: ${e.message}`,
+        //             })
+        //     })
 
         // launch chromium browser
         const browser = await playwright.chromium.launch({
@@ -120,21 +120,11 @@ async function handler(req, res) {
                 height: 630
             }
         });
-        //go to the og-images url. With the query params added,
+        // go to the og-images url. With the query params added,
         // it should produce our blog posts og-image with the posts title and description
         await page.goto(url, {
             timeout: 15 * 1000
         })
-
-        // const bufferToBase64 = (blob) => {
-        //     const reader = new FileReader();
-        //     reader.readAsDataURL(blob);
-        //     return new Promise((resolve) => {
-        //         reader.onloadend = () => {
-        //             resolve(reader.result);
-        //         };
-        //     });
-        // };
 
         // take the screenshot
         const buffer = await page.screenshot({ type: "png" })
@@ -149,9 +139,9 @@ async function handler(req, res) {
                 if (error) {
                     console.log({ error })
                     // res.status(500)
-                    res.json({
-                        message: `Error in cloudinary upload: ${error}`,
-                    })
+                    // res.json({
+                    //     message: `Error in cloudinary upload: ${error}`,
+                    // })
                 } else if (result) {
                     console.log({ result });
                     image = result
