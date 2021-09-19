@@ -75,15 +75,7 @@ async function handler(req, res) {
     // params posted to function
     const { title, description, slug } = req.body;
 
-    res.setHeader('Access-Control-Allow-Credentials', true)
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    // another common pattern
-    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    )
+    // res.setHeader('Access-Control-Allow-Origin', '*');
 
     try {
         // check if the image already exists in our cloudinary folder
@@ -181,5 +173,4 @@ async function handler(req, res) {
 
 }
 
-// export default allowCors(handler)
-export default handler
+export default allowCors(handler)
